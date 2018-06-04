@@ -1,0 +1,7 @@
+#!/usr/bin/env ruby
+
+puts "Welcome to Bleacher Report CLI"
+
+require "../lib/bleacher_report_cli_app"
+
+BleacherReportCliApp::CLI.new.call
