@@ -11,67 +11,95 @@ module BleacherReportCliApp
       puts "  >--------------->  Welcome to Ben's Bleacher Report App  <---------------<"
       puts '<============================================================================>'
       puts ''
+      start_league_with_print
+    end
+
+    def start_league_with_print
+      print_leagues
       start_league
     end
 
     def start_league
-      print_leagues
       puts ""
       @league_input = gets.strip
       # binding.pry
-      if @league_input.to_s.upcase == 'NBA' || 'NFL' || 'MLB' || 'NHL'
-        start_division
-      elsif @league_input.to_s.downcase == 'end' || 'exit'
+      s_lg_npt = @league_input.to_s.upcase
+      if s_lg_npt == 'NBA' || s_lg_npt == 'NFL' || s_lg_npt == 'MLB' || s_lg_npt == 'NHL'
+        start_division_with_print
+      elsif s_lg_npt.downcase == 'end' || s_lg_npt.downcase == 'exit'
         end_message
       else
-        puts 'Please enter the name of a league or "end" to exit the program.'
-        @league_input = gets.strip
+        puts ''
+        puts '      * Please enter the name of a league or "end" to exit the program *'
+        puts ''
+        start_league
       end
+    end
+
+    def start_division_with_print
+      print_divisions(@league_input)
+      start_division
     end
 
     def start_division
-      print_divisions(@league_input)
       puts ''
       @division_input = gets.strip
-      if @division_input.to_s.downcase == divisions.to_s.downcase.any?
-        start_team
-      elsif @division_input.to_s.downcase == 'back'
-        start_league
-      elsif @division_input.to_s.downcase == 'end' || 'exit'
+      s_dvsn_npt = @division_input.to_s.downcase
+      if s_dvsn_npt == divisions.to_s.downcase.any?
+        start_team_with_print
+      elsif s_dvsn_npt == 'back'
+        start_league_with_print
+      elsif s_dvsn_npt == 'end' || s_dvsn_npt == 'exit'
         end_message
       else
-        puts 'Please enter the name of a division, "back" to see leagues, or "end" to exit the program.'
-        @division_input = gets.strip
+        puts ''
+        puts '        Please enter the name of a division, "back" to see leagues, or "end" to exit the program.'
+        puts ''
+        start_division
       end
+    end
+
+    def start_team_with_print
+      print_teams(@division_input)
+      start_team
     end
 
     def start_team
-      print_teams(@division_input)
       puts ''
       @team_input = gets.strip
-      if @team_input.to_s.downcase == teams.to_s.downcase.any?
-        start_article
-      elsif @team_input.to_s.downcase == 'back'
-        start_division
-      elsif @team_input.to_s.downcase == 'end' || 'exit'
+      s_tm_npt = @team_input.to_s.downcase
+      if s_tm_npt == teams.to_s.downcase.any?
+        start_article_with_print
+      elsif s_tm_npt == 'back'
+        start_division_with_print
+      elsif s_tm_npt == 'end' || s_tm_npt == 'exit'
         end_message
       else
-        puts 'Please enter the name of a team, "back" to see divisions, or "end" to exit the program.'
-        @team_input = gets.strip
+        puts ''
+        puts '        Please enter the name of a team, "back" to see divisions, or "end" to exit the program.'
+        puts ''
+        start_team
       end
     end
 
-    def start_article
+    def start_article_with_print
       print_articles(@team_input)
+      start_article
+    end
+
+    def start_article
       puts ''
       @article_input = gets.strip
-      if @article_input.to_s.downcase == 'back'
-        start_team
-      elsif @article_input.to_s.downcase == 'end' || 'exit'
+      s_rtcl_npt = @article_input.to_s.downcase
+      if s_rtcl_npt == 'back'
+        start_team_with_print
+      elsif s_rtcl_npt == 'end' || s_rtcl_npt == 'exit'
         end_message
       else
-        puts 'Please enter "back" to see teams or "end" to exit the program.'
-        @article_input = gets.strip
+        puts ''
+        puts '        Please enter "back" to see teams or "end" to exit the program.'
+        puts ''
+        start_article
       end
     end
 
