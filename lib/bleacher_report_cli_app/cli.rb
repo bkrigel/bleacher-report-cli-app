@@ -1,4 +1,5 @@
 require 'pry'
+require_relative './scraper.rb'
 
 module BleacherReportCliApp
   class CLI
@@ -22,10 +23,15 @@ module BleacherReportCliApp
     def start_league
       puts ""
       @league_input = gets.strip
-      # binding.pry
       s_lg_npt = @league_input.to_s.upcase
-      if s_lg_npt == "NBA" || s_lg_npt == "NFL" || s_lg_npt == "MLB" || s_lg_npt == "NHL"
+      if s_lg_npt == "NHL"
         start_division_with_print
+      elsif s_lg_npt == "NBA" || s_lg_npt == "NFL" || s_lg_npt == "MLB"
+        puts ""
+        puts "         * Sorry, functionality only available for NHL right now... "
+        puts "       Please enter the name of a league or \"end\" to exit the program *"
+        puts ""
+        start_league
       elsif s_lg_npt.downcase == "end" || s_lg_npt.downcase == "exit"
         end_message
       else
@@ -37,7 +43,7 @@ module BleacherReportCliApp
     end
 
     def start_division_with_print
-      print_divisions(@league_input)
+      print_divisions
       start_division
     end
 
@@ -45,7 +51,7 @@ module BleacherReportCliApp
       puts ""
       @division_input = gets.strip
       s_dvsn_npt = @division_input.to_s.downcase
-      if s_dvsn_npt == divisions.to_s.downcase.any?
+      if Scraper.scrape_divisions.any? {|division| division.split(" ")[0].downcase == s_dvsn_npt || division.downcase == s_dvsn_npt}
         start_team_with_print
       elsif s_dvsn_npt == "back"
         start_league_with_print
@@ -53,7 +59,8 @@ module BleacherReportCliApp
         end_message
       else
         puts ""
-        puts "        Please enter the name of a division, \"back\" to see leagues, or \"end\" to exit the program."
+        puts "                * Please enter the name of a division,"
+        puts "         \"back\" to see leagues, or \"end\" to exit the program. *"
         puts ""
         start_division
       end
@@ -68,15 +75,15 @@ module BleacherReportCliApp
       puts ''
       @team_input = gets.strip
       s_tm_npt = @team_input.to_s.downcase
-      if s_tm_npt == teams.to_s.downcase.any?
-        start_article_with_print
-      elsif s_tm_npt == "back"
+      # if s_tm_npt == teams.to_s.downcase.any?
+      #   start_article_with_print
+      if s_tm_npt == "back"
         start_division_with_print
       elsif s_tm_npt == "end" || s_tm_npt == "exit"
         end_message
       else
         puts ""
-        puts "        Please enter the name of a team, \"back\" to see divisions, or \"end\" to exit the program."
+        puts "      * Please enter the name of a team, \"back\" to see divisions, or \"end\" to exit the program. *"
         puts ''
         start_team
       end
@@ -115,12 +122,13 @@ module BleacherReportCliApp
       puts "                    * Please enter the name of a league *"
     end
 
-    def print_divisions(league)
+    def print_divisions
       puts "   +~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~+"
       puts ""
-      puts "        #{@league_input.upcase}:"
-      # for each league, print divisions
-      puts "            ---> each division"
+      puts "        NHL:"
+      Scraper.scrape_divisions.each do |division|
+        puts "            ---> #{division}"
+      end
       puts ""
       puts "   +~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~+"
 
@@ -131,10 +139,28 @@ module BleacherReportCliApp
     def print_teams(division)
       puts "   +~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~+"
       puts ""
-      puts "        #{@league_input.upcase}:"
-      puts "            #{division} Division:"
-      # for each division, print teams
-      puts "                ---> each team"
+      puts "        #{league_input.upcase}:"
+      if division_input.downcase.include?("division")
+        puts "            #{division_input.split(/ |\_/).map(&:capitalize).join(" ")}:"
+      else puts "            #{division_input.split(/ |\_/).map(&:capitalize).join(" ")} Division:"
+      end
+      if division_input.downcase.include?("metropolitan")
+        Scraper.scrape_teams[0..7].each do |team|
+          puts "                ---> #{team}"
+        end
+      elsif division_input.downcase.include?("atlantic")
+        Scraper.scrape_teams[8..15].each do |team|
+          puts "                ---> #{team}"
+        end
+      elsif division_input.downcase.include?("central")
+        Scraper.scrape_teams[16..22].each do |team|
+          puts "                ---> #{team}"
+        end
+      elsif division_input.downcase.include?("pacific")
+        Scraper.scrape_teams[23..30].each do |team|
+          puts "                ---> #{team}"
+        end
+      end
       puts ""
       puts "   +~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~+"
 
@@ -142,17 +168,17 @@ module BleacherReportCliApp
       puts "                    OR enter \"back\" to see divisions"
     end
 
-    def print_articles(team)
-      puts "   +~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~+"
-      puts ""
-      puts "        Top 5 Articles for #{team}:"
-      # for each team, print top 5 headlines
-      puts "            ---> 5 headlines"
-      puts ""
-      puts "   +~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~+"
+    # def print_articles(team)
+    #   puts "   +~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~+"
+    #   puts ""
+    #   puts "        Top 5 Articles for #{team}:"
+    #   # for each team, print top 5 headlines
+    #   puts "            ---> 5 headlines"
+    #   puts ""
+    #   puts "   +~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~+"
 
-      puts "                    * Enter \"back\" to see teams *"
-    end
+    #   puts "                    * Enter \"back\" to see teams *"
+    # end
 
     def end_message
       puts ""

@@ -3,3 +3,4 @@
 require_relative "../lib/bleacher_report_cli_app"
 
 BleacherReportCliApp::CLI.new.call
+# BleacherReportCliApp::Scraper.new.scrape_teams
