@@ -7,6 +7,7 @@ module BleacherReportCliApp
     attr_accessor :league_input, :division_input, :team_input, :article_input
 
     def call
+      clear
       puts ""
       puts "<============================================================================>"
       puts "  >--------------->  Welcome to Ben's Bleacher Report App  <---------------<"
@@ -187,6 +188,10 @@ module BleacherReportCliApp
       puts "       Thank you for using Ben's Bleacher Report App! Come back soon!!        "
       puts "+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~+"
       puts ""
+    end
+
+    def clear
+      system "clear"
     end
 
   end
