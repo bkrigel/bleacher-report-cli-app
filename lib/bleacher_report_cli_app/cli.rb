@@ -67,7 +67,7 @@ module BleacherReportCliApp
     end
 
     def start_team_with_print
-      print_teams(@division_input)
+      print_teams
       start_team
     end
 
@@ -132,11 +132,11 @@ module BleacherReportCliApp
       puts ""
       puts "   +~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~+"
 
-      puts "                * Please enter the name of a division *"
-      puts "                    OR enter \"back\" to see leagues"
+      puts "                  * Please enter the name of a division *"
+      puts "                      OR enter \"back\" to see leagues"
     end
 
-    def print_teams(division)
+    def print_teams
       puts "   +~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~+"
       puts ""
       puts "        #{league_input.upcase}:"
@@ -164,8 +164,9 @@ module BleacherReportCliApp
       puts ""
       puts "   +~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~+"
 
-      puts "                  * Please enter the name of a team *"
-      puts "                    OR enter \"back\" to see divisions"
+      # puts "                    * Please enter the name of a team *"
+      # puts "                      OR enter \"back\" to see divisions"
+      puts "          * Enter \"back\" to see teams or \"end\" to exit the program. *"
     end
 
     # def print_articles(team)
