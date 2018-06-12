@@ -108,8 +108,8 @@ module BleacherReportCliApp
         end_message
       else
         puts ""
-        puts "                     * Please enter the name of a team,"
-        puts "            \"back\" to see divisions, or \"end\" to exit the program *"
+        # puts "                     * Please enter the name of a team,"
+        puts "          * Enter \"back\" to see teams or \"end\" to exit the program *"
         puts ''
         start_team
       end
