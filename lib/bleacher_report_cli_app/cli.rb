@@ -185,6 +185,16 @@ module BleacherReportCliApp
       puts "                      OR enter \"back\" to see conferences"
     end
 
+    # def display_teams(team_range)
+    #   Scraper.scrape_teams[team_range].each do |team|
+    #     puts "                       ---> #{team}"
+    #   end
+    # end
+
+    # def team_ranges(team_name)
+    #   {"metropolitan": (0..7), "atlantic": (8..15), "central": (16..22), "pacific": (23..30)}
+    # end
+
     def print_teams
       puts "   +~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~+"
       puts ""
@@ -197,6 +207,9 @@ module BleacherReportCliApp
         puts "                  #{division_input.split(/ |\_/).map(&:capitalize).join(" ")}:"
       else puts "                  #{division_input.split(/ |\_/).map(&:capitalize).join(" ")} Division:"
       end
+      # if ["metropolitan", "atlantic", "central", "pacific"].include?(division_input.downcase)
+      #   display_teams(team_ranges(division_input.downcase))
+      # end
       if division_input.downcase.include?("metropolitan")
         Scraper.scrape_teams[0..7].each do |team|
           puts "                       ---> #{team}"
